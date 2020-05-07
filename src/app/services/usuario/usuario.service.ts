@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Usuario } from '../../models/usuario.model';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { URL_SERVICIOS } from '../../config/config';
 import { map } from 'rxjs/operators';
 import { pipe } from 'rxjs';
@@ -113,14 +113,13 @@ export class UsuarioService {
     let url = URL_SERVICIOS + '/usuario/' + usuario._id;
     url += '?token=' + this.token;
 
-    // console.log( url);
-
     return this.http.put( url, usuario )
             .pipe(map( (resp: any) => {
-              // this.usuario = resp.usuario;
-              let usuarioDB: Usuario = resp.usuario;
 
-              this.guardarStorage(usuarioDB._id, this.token, usuarioDB);
+              if (usuario._id === this.usuario._id ) {
+                let usuarioDB: Usuario = resp.usuario;
+                this.guardarStorage(usuarioDB._id, this.token, usuarioDB);
+              }
 
               Swal.fire('Usuario actualizado', usuario.nombre, 'success' );
               return true;
@@ -129,7 +128,7 @@ export class UsuarioService {
   }
 
   cambiarImagen( archivo: File, id: string ){
-    console.log('archivo:', archivo)
+
     this._subirArchivoService.subirArchivo( archivo, 'usuarios', id )
     .then( ( resp: any) => {
      this.usuario.img = resp.usuario.img;
@@ -138,9 +137,32 @@ export class UsuarioService {
     })
     .catch( resp => {
       console.log( resp );
-    })
+    });
 
   }
 
+  cargarUsuarios( desde: number ){
+    let url = URL_SERVICIOS + '/usuario?desde=' + desde;
+    
+    return this.http.get( url ) ;
 
+  }
+
+  buscarUsuarios ( termino: string ){
+    
+    let url = URL_SERVICIOS + '/busqueda/coleccion/usuarios/' + termino;
+    return this.http.get( url )
+              .pipe(map( (resp: any) => resp.usuarios ));
+  }
+
+  borrarUsuario( id: string ){
+    let url = URL_SERVICIOS + '/usuario/' + id;
+    url += '?token=' + this.token;
+
+    return this.http.delete( url )
+                .pipe(map( resp => {
+                  Swal.fire('Borrado!','El registro ha sido eliminado.','success');
+                  return true;
+                }));
+  }
 }

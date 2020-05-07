@@ -18,11 +18,11 @@ export class SubirArchivoService {
 
       formData.append( 'imagen', archivo, archivo.name);
 
-      // tslint:disable-next-line: only-arrow-functions
       xhr.onreadystatechange = function() {
 
+        console.log('RESPUESTA: ' , xhr.readyState);
         if ( xhr.readyState === 4 ){
-
+          console.log('STATUS: ' , xhr.status);
           if (xhr.status === 200 ){
             console.log(' Imagen subida');
             resolve( JSON.parse( xhr.response ) );
@@ -34,12 +34,9 @@ export class SubirArchivoService {
       };
 
       let url = URL_SERVICIOS + '/upload/' + tipo + '/' + id;
-
-      console.log('url: ', url);
-
+      console.log('url: ' , url);
       xhr.open('PUT', url, true);
       xhr.send( formData);
-
 
     });
 
