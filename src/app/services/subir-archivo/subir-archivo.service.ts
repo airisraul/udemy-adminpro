@@ -19,8 +19,7 @@ export class SubirArchivoService {
       formData.append( 'imagen', archivo, archivo.name);
 
       xhr.onreadystatechange = function() {
-
-        console.log('RESPUESTA: ' , xhr.readyState);
+        
         if ( xhr.readyState === 4 ){
           console.log('STATUS: ' , xhr.status);
           if (xhr.status === 200 ){

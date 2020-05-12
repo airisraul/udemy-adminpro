@@ -143,13 +143,13 @@ export class UsuarioService {
 
   cargarUsuarios( desde: number ){
     let url = URL_SERVICIOS + '/usuario?desde=' + desde;
-    
+
     return this.http.get( url ) ;
 
   }
 
-  buscarUsuarios ( termino: string ){
-    
+  buscarUsuarios( termino: string ){
+
     let url = URL_SERVICIOS + '/busqueda/coleccion/usuarios/' + termino;
     return this.http.get( url )
               .pipe(map( (resp: any) => resp.usuarios ));
@@ -161,7 +161,7 @@ export class UsuarioService {
 
     return this.http.delete( url )
                 .pipe(map( resp => {
-                  Swal.fire('Borrado!','El registro ha sido eliminado.','success');
+                  Swal.fire('Borrado!', 'El registro ha sido eliminado.', 'success');
                   return true;
                 }));
   }

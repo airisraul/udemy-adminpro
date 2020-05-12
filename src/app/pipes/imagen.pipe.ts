@@ -41,7 +41,7 @@ export class ImagenPipe implements PipeTransform {
         url += '/usuarios/xxx';
   }
 
-    return 'FUNCIONA!';
+    return url;
   }
 }
 
