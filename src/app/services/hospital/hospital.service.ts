@@ -14,7 +14,7 @@ export class HospitalService {
 
   hospital: Hospital;
   token: string;
-  totalHospitales: number = 0;
+  totalRegistros: number = 0;
 
   constructor(
     public http: HttpClient,
@@ -28,7 +28,8 @@ export class HospitalService {
      
     return this.http.get( url )
        .pipe(map( (resp: any) => {
-        this.totalHospitales = resp.total;
+        this.totalRegistros = resp.total;
+        console.log(resp.total);
         return resp.hospitales;
      }));
   }

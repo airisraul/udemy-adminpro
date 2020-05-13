@@ -21,26 +21,27 @@ export class HospitalComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    
+
     this.cargarHospitales();
 
-    // this._modalUploadService.notificacion
-    //      .subscribe( () => this.cargarHospitales() );
+    this._modalUploadService.notificacion
+          .subscribe( () => this.cargarHospitales() );
+  }
+
+   cargarHospitales(){
+
+    this.cargando = true;
+    this._hospitalService.cargarHospitales()
+        .subscribe( hospitales => this.hospitales = hospitales)
+          // .subscribe( (resp: any) => {
+          //   this.totalRegistros = resp.total;
+          //   this.hospitales = resp.hospitales;
+    this.cargando = false;
+          // });
   }
 
   mostrarModal( id: string ){
     this._modalUploadService.mostrarModal('hospitales', id);
-  }
-
-  cargarHospitales(){
-
-    this.cargando = true;
-    this._hospitalService.cargarHospitales()
-          .subscribe( (resp: any) => {
-            this.totalRegistros = resp.total;
-            this.hospitales = resp.hospitales;
-            this.cargando = false;
-          });
   }
 
   buscarHospital( termino: string){
@@ -110,7 +111,7 @@ export class HospitalComponent implements OnInit {
   // }
 
   actualizarImagen( hospital: Hospital ) {
-    this._modalUploadService.mostrarModal('hospitales', hospital._id)
+    this._modalUploadService.mostrarModal('hospitales', hospital._id);
   }
 
 }
