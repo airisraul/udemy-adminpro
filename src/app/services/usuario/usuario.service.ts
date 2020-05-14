@@ -27,8 +27,30 @@ export class UsuarioService {
     public _subirArchivoService: SubirArchivoService
   ) {
     this.cargarStorage();
-    console.log('Servicio de usuario listo');
   }
+
+  renuevaToken(){
+    let url = URL_SERVICIOS + '/login/renuevatoken';
+    url += '?token=' + this.token;
+
+    return this.http.get( url )
+    .pipe(map( (resp: any ) => {
+      this.token = resp.token;
+      localStorage.setItem('token',this.token);
+      console.log('Token renovado');
+      return true;
+    }),
+    catchError( err => {
+       this.router.navigate(['/login']);
+       Swal.fire('Error en el login', err.error.mensaje, 'error')
+
+       return Observable.throw( err );
+    })
+    );
+
+
+  }
+
 
   estaLogueado(){
     return ( this.token.length > 5) ? true : false;
